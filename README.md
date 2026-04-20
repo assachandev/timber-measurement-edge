@@ -97,6 +97,12 @@ RPi5 System
 
 ## Key Scripts
 
+### `gstreamer/gstreamer_helper_pipelines.py`
+Modified from hailo-apps-infra to add two capabilities the original did not support:
+
+- **RTSP IP camera input** — replaced the generic `decodebin` with an explicit decode chain (`rtph264depay → h264parse → avdec_h264`) required for reliable H.264 stream decoding from IP cameras
+- **`TEXT_OVERLAY_PIPELINE`** — new function added to render live telemetry (daily count, current length, AVG/MAX/MIN) directly onto the video output via GStreamer `textoverlay`
+
 ### `log_detection.py`
 Custom callback built on top of hailo-apps-infra's GStreamer detection pipeline. Tracks each log by unique ID across frames, calculates length from bounding box pixel width using a calibrated pixels-per-mm ratio, and records the best measurement when the log exits frame or stabilizes. Resets count daily at midnight.
 
