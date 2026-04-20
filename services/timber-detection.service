@@ -1,0 +1,19 @@
+[Unit]
+Description=Log Detection Service (Hailo-8 AI)
+After=graphical-session.target
+
+[Service]
+Type=simple
+User=admin
+Group=admin
+WorkingDirectory=/path/to/hailo-apps-infra
+Environment=WAYLAND_DISPLAY=wayland-0
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+ExecStart=/bin/bash /path/to/hailo-apps-infra/run-detection.sh
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=Measurement Combine Service
+After=network.target timber-sensor-diameter.service
+
+[Service]
+Type=simple
+User=admin
+WorkingDirectory=/path/to/timber-measurement-edge
+ExecStart=/path/to/venv/bin/python3 scripts/measurement/combine-measurement.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

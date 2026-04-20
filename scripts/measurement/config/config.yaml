@@ -1,0 +1,28 @@
+# Measurement Integration Daemon Configuration
+application:
+  name: "Measurement Integration Daemon"
+  version: "1.0"
+  environment: "production"
+
+files:
+  length_csv: "data/length_data.csv"
+  diameter_csv: "data/diameter_combined.csv"
+  output_csv: "data/final-measurement.csv"
+  log_dir: "logs"
+
+matching:
+  window_before: 30
+  window_after: 30
+  timeout_seconds: 60
+  max_queue_size: 10000
+
+polling:
+  length_poll_interval_ms: 500
+  diameter_poll_interval_ms: 200
+  maintenance_interval_seconds: 300
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_file_size_mb: 50
+  backup_count: 10

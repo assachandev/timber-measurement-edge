@@ -1,0 +1,16 @@
+[Unit]
+Description=Diameter Sensor Reader (Modbus RTU)
+After=network.target
+
+[Service]
+Type=simple
+User=admin
+WorkingDirectory=/path/to/timber-measurement-edge
+ExecStart=/path/to/venv/bin/python3 scripts/diameter/diameter_sensor.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

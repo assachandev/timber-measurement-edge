@@ -1,0 +1,17 @@
+[Unit]
+Description=System Monitoring Service (Health + Status to Cloud)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=admin
+WorkingDirectory=/path/to/timber-measurement-edge
+ExecStart=/path/to/venv/bin/python3 scripts/monitoring/system-monitoring.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

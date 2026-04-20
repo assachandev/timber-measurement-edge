@@ -1,0 +1,15 @@
+[Unit]
+Description=Camera Recording Service (RTSP to SSD)
+After=network.target
+
+[Service]
+Type=simple
+User=admin
+ExecStart=/path/to/venv/bin/python3 /path/to/timber-measurement-edge/scripts/record/record.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
