@@ -64,7 +64,7 @@ RPi5 System
 |-------------|-------------------------------------------------|
 | AI Pipeline | Hailo TAPPAS, GStreamer, hailo-apps-infra        |
 | Sensors     | pymodbus (Modbus RTU)                           |
-| Telemetry   | paho-mqtt, Sensorclouds                         |
+| Telemetry   | paho-mqtt, MQTT broker                          |
 | System      | systemd services, Python 3.11, Raspberry Pi OS  |
 
 ---
