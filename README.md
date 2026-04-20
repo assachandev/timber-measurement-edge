@@ -148,4 +148,30 @@ The detection pipeline runs inside the virtual environment provided by [hailo-ap
 
 ---
 
+## Model Training Results
+
+The detection model was trained on a custom dataset of log images captured at the production site. Only one class (`log`) was required.
+
+**Training metrics (200 epochs):**
+
+| Metric | Value |
+|---|---|
+| mAP@0.5 | 0.995 |
+| Precision | 1.00 |
+| Recall | 1.00 |
+
+### Training Curves
+![Training Results](assets/results.png)
+
+### Precision-Recall Curve
+![PR Curve](assets/BoxPR_curve.png)
+
+### Confusion Matrix
+![Confusion Matrix](assets/confusion_matrix_normalized.png)
+
+### Validation Predictions
+![Validation Predictions](assets/val_batch0_pred.jpg)
+
+---
+
 *Deployed and maintained at a timber production facility. All sensitive configuration is managed via environment variables and excluded from this repository.*
