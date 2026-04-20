@@ -100,14 +100,27 @@ RPi5 System
 ### `log_detection.py`
 Custom callback built on top of hailo-apps-infra's GStreamer detection pipeline. Tracks each log by unique ID across frames, calculates length from bounding box pixel width using a calibrated pixels-per-mm ratio, and records the best measurement when the log exits frame or stabilizes. Resets count daily at midnight.
 
+The script records the **best** measurement across all frames rather than the first or last — logs can be partially occluded when entering or exiting the frame, so waiting for the largest stable reading gives a more accurate result.
+
 ### `diameter_sensor.py`
 Reads 4 laser displacement sensors (Left, Right, Top, Bottom) over Modbus RTU at 0.5s intervals. Detects log entry/exit by monitoring sensor window states. Calculates horizontal and vertical diameter from opposing sensor pairs and saves averaged statistics per log pass.
+
+A stall detection mechanism discards measurements if the log stops mid-frame — a stationary log would produce a biased average that does not represent the true cross-section. Only complete, moving passes are recorded.
 
 ### `combine-measurement.py`
 Daemon that continuously polls both CSV outputs and matches length and diameter records within a configurable timestamp window (±30s). Uses a FIFO queue for diameter records and an unmatched cache for length records. Handles mismatches gracefully — unmatched records are written after a timeout. Thread-safe with graceful signal shutdown.
 
+The two sensors (camera and Modbus) are independent processes with no shared clock signal, so exact timestamp alignment is not guaranteed. The matching window accounts for natural timing differences between when a log passes the camera versus the sensor array. Unmatched records are still written to the output rather than discarded — preserving partial data is more useful than losing a measurement entirely.
+
 ### `mqtt_publisher.py`
 Tails `final-measurement.csv` using a persistent byte offset, parses each new row, and publishes to an MQTT broker with QoS 2. Maintains an in-flight map to track acknowledged messages and commits offset only on confirmed delivery.
+
+The byte offset is persisted to disk so that if the service restarts — due to a crash or system reboot — it resumes exactly where it left off without re-sending already-published records or skipping new ones.
+
+### `record.py`
+Continuously records the RTSP camera stream to the SSD in 1-hour segments. Monitors camera connectivity and only records within a defined time window (production hours).
+
+Video is recorded as a redundancy layer. If the detection pipeline crashes or produces unexpected results, the raw footage can be used to re-run detection offline and recover the data. Segments older than 32 days are automatically deleted to prevent the SSD from filling up.
 
 ---
 
