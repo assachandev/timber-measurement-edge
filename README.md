@@ -1,6 +1,6 @@
 # timber-measurement-edge
 
-> Production edge system for real-time log dimension measurement, deployed at a timber production facility in Thailand.
+> Production edge system for real-time log dimension measurement.
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-5-C51A4A?style=flat-square&logo=raspberrypi&logoColor=white)
