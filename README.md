@@ -7,6 +7,8 @@
 ![Hailo](https://img.shields.io/badge/AI-Hailo--8-00B4D8?style=flat-square)
 ![MQTT](https://img.shields.io/badge/Protocol-MQTT-6B4FBB?style=flat-square)
 
+https://github.com/user-attachments/assets/c7d660b8-5de0-4be0-b073-2e68bc819322
+
 ---
 
 ## The Problem
