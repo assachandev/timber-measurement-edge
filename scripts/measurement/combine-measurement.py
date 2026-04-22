@@ -91,6 +91,7 @@ class CSVFileMonitor:
         self.file_path = file_path
         self.logger = logger
         self.last_line_number = 0
+        self.last_mtime = 0.0
         self.lock = Lock()
         self.state_file = Path(file_path).parent / f".{Path(file_path).name}.state"
         self._load_state()
@@ -118,6 +119,9 @@ class CSVFileMonitor:
                 if not os.path.exists(self.file_path):
                     self.logger.warning(f"CSV file not found: {self.file_path}")
                     return []
+                mtime = os.path.getmtime(self.file_path)
+                if mtime <= self.last_mtime:
+                    return []
                 rows = []
                 with open(self.file_path, 'r', encoding='utf-8', newline='') as f:
                     reader = csv.DictReader(f)
@@ -139,6 +143,7 @@ class CSVFileMonitor:
                     if last_processed_line > self.last_line_number:
                         self.last_line_number = last_processed_line
                         self._save_state()
+                self.last_mtime = mtime
                 return rows
             except Exception as e:
                 self.logger.error(f"Error reading CSV {self.file_path}: {e}")
