@@ -144,12 +144,14 @@ The detection model was trained on a custom dataset of log images captured at th
 
 ### Version History
 
-| Version | Epochs | Batch | Device | mAP@0.5 | mAP@0.5:0.95 | Precision | Recall |
-|---------|--------|-------|--------|---------|---------------|-----------|--------|
-| V2.0    | 100    | 8     | CPU    | 0.995   | 0.981         | 1.00      | 1.00   |
-| V3.1    | 100    | 64    | GPU    | 0.995   | 0.898         | 1.00      | 1.00   |
-| V3.2    | 200    | 64    | GPU    | 0.995   | 0.900         | 1.00      | 1.00   |
-| V3.4    | 200    | 64    | GPU    | 0.995   | 0.904         | 1.00      | 1.00   |
+| Version | Images | Epochs | Batch | Device | mAP@0.5 | mAP@0.5:0.95 | Precision | Recall |
+|---------|--------|--------|-------|--------|---------|---------------|-----------|--------|
+| V2.0    | ~700   | 100    | 8     | CPU    | 0.995   | 0.981         | 1.00      | 1.00   |
+| V3.1    | ~3000  | 100    | 64    | GPU    | 0.995   | 0.898         | 1.00      | 1.00   |
+| V3.2    | ~3500  | 200    | 64    | GPU    | 0.995   | 0.900         | 1.00      | 1.00   |
+| V3.4    | ~5000  | 200    | 64    | GPU    | 0.995   | 0.904         | 1.00      | 1.00   |
+
+> V2.0 shows higher mAP@0.5:0.95 due to its smaller dataset — the model memorized most cases. V3.x was trained on progressively larger datasets with more diverse examples for better generalization in production. V3.4 is the currently deployed version.
 
 ### Training Curves
 
