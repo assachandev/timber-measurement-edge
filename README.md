@@ -134,13 +134,13 @@ System and health metrics published to cloud every 15 minutes (system status) an
 | Hardware      | `cpu_usage`, `cpu_temp`, `cpu_freq_mhz`, `ram_usage`, `sd_card_usage`, `ssd_usage`, `uptime` |
 | Connectivity  | `tailscale_online`, `camera_reachable`, `ssd_mounted`, `ups_online`       |
 | Services      | Status of all 6 systemd services                                           |
-| Data Freshness| Age in hours of each CSV and last MQTT publish timestamp                  |
+| Data Freshness| Age of each measurement output and last publish timestamp                 |
 
 ---
 
 ## Model Training
 
-The detection model was trained on a custom dataset of log images captured at the production site. Only one class (`log`) was required. The model went through multiple iterations to optimize performance for edge deployment.
+The detection model (YOLOv8n) was trained on a custom dataset of log images captured at the production site. Only one class (`log`) was required. The model went through multiple iterations — expanding the dataset and tuning training parameters for edge deployment.
 
 ### Version History
 
