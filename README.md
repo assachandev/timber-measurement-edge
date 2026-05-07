@@ -105,36 +105,25 @@ Workers no longer need to be assigned to manual measurement. All data is capture
 ## Key Design Decisions
 
 ### Length Measurement
-Custom callback built on top of hailo-apps-infra's GStreamer detection pipeline. Tracks each log by unique ID across frames, calculates length from bounding box pixel width using a calibrated pixels-per-mm ratio, and records the best measurement when the log exits frame or stabilizes.
-
-The system records the **best** measurement across all frames rather than the first or last — logs can be partially occluded when entering or exiting the frame, so waiting for the largest stable reading gives a more accurate result.
+Tracks each log across frames and records the **best** measurement rather than the first or last — logs can be partially occluded when entering or exiting the frame, so waiting for the largest stable reading gives a more accurate result.
 
 ### Diameter Measurement
-Reads 4 laser displacement sensors (Left, Right, Top, Bottom) over Modbus RTU at 0.5s intervals. Detects log entry/exit by monitoring sensor window states. Calculates horizontal and vertical diameter from opposing sensor pairs and saves averaged statistics per log pass.
-
-A stall detection mechanism discards measurements if the log stops mid-frame — a stationary log would produce a biased average that does not represent the true cross-section. Only complete, moving passes are recorded.
+Reads 4 laser displacement sensors over Modbus RTU to calculate horizontal and vertical diameter. A stall detection mechanism discards incomplete passes — only logs moving through the full sensor array are recorded.
 
 ### Record Matching
-The two sensors (camera and Modbus) are independent processes with no shared clock signal, so exact timestamp alignment is not guaranteed. A configurable matching window (±30s) accounts for natural timing differences between when a log passes the camera versus the sensor array. Unmatched records are still written to the output rather than discarded — preserving partial data is more useful than losing a measurement entirely.
+The camera and sensor array are independent systems with no shared clock. A configurable matching window accounts for timing differences, and unmatched records are preserved rather than discarded — partial data is more useful than no data.
 
 ### MQTT Publishing
-Uses a persistent byte offset so that if the service restarts — due to a crash or system reboot — it resumes exactly where it left off without re-sending already-published records or skipping new ones. All messages use QoS 2 for exactly-once delivery.
+Designed for exactly-once delivery with crash recovery — the service can restart without re-sending or skipping records.
 
 ### Video Recording
-Continuously records the RTSP camera stream to the SSD in 1-hour segments as a redundancy layer. If the detection pipeline crashes or produces unexpected results, the raw footage can be used to re-run detection offline and recover the data. Segments older than 32 days are automatically deleted.
+Continuous recording to SSD as a redundancy layer. If the detection pipeline produces unexpected results, raw footage can be used to recover data.
 
 ---
 
 ## Monitoring
 
-System and health metrics published to cloud every 15 minutes (system status) and every 1 minute (hardware health).
-
-| Metric Group  | Parameters                                                                 |
-|---------------|----------------------------------------------------------------------------|
-| Hardware      | `cpu_usage`, `cpu_temp`, `cpu_freq_mhz`, `ram_usage`, `sd_card_usage`, `ssd_usage`, `uptime` |
-| Connectivity  | `tailscale_online`, `camera_reachable`, `ssd_mounted`, `ups_online`       |
-| Services      | Status of all 6 systemd services                                           |
-| Data Freshness| Age of each measurement output and last publish timestamp                 |
+System and health metrics published to cloud at regular intervals — covering hardware status, connectivity, service health, and data freshness.
 
 ---
 
