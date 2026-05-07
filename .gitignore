@@ -1,0 +1,22 @@
+# Data files
+data/
+videos/
+logs/
+*.csv
+*.log
+*.state
+*.offset
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+
+# Environment
+.env
+
+# System
+.DS_Store
+*.save
+hailort.log
