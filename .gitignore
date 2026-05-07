@@ -1,3 +1,6 @@
+# Model weights and training runs
+model/
+
 # Data files
 data/
 videos/

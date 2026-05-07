@@ -138,29 +138,38 @@ System and health metrics published to cloud every 15 minutes (system status) an
 
 ---
 
-## Model Training Results
+## Model Training
 
-The detection model was trained on a custom dataset of log images captured at the production site. Only one class (`log`) was required.
+The detection model was trained on a custom dataset of log images captured at the production site. Only one class (`log`) was required. The model went through multiple iterations to optimize performance for edge deployment.
 
-**Training metrics (200 epochs):**
+### Version History
 
-| Metric | Value |
-|---|---|
-| mAP@0.5 | 0.995 |
-| Precision | 1.00 |
-| Recall | 1.00 |
+| Version | Epochs | Batch | Device | mAP@0.5 | mAP@0.5:0.95 | Precision | Recall |
+|---------|--------|-------|--------|---------|---------------|-----------|--------|
+| V2.0    | 100    | 8     | CPU    | 0.995   | 0.981         | 1.00      | 1.00   |
+| V3.1    | 100    | 64    | GPU    | 0.995   | 0.898         | 1.00      | 1.00   |
+| V3.2    | 200    | 64    | GPU    | 0.995   | 0.900         | 1.00      | 1.00   |
+| V3.4    | 200    | 64    | GPU    | 0.995   | 0.904         | 1.00      | 1.00   |
 
 ### Training Curves
-![Training Results](assets/results.png)
 
-### Precision-Recall Curve
-![PR Curve](assets/BoxPR_curve.png)
+**V2.0** — 100 epochs, CPU, batch size 8
+![V2.0 Training](assets/v2.0-results.png)
 
-### Confusion Matrix
-![Confusion Matrix](assets/confusion_matrix_normalized.png)
+**V3.1** — 100 epochs, GPU, batch size 64
+![V3.1 Training](assets/v3.1-results.png)
 
-### Validation Predictions
-![Validation Predictions](assets/val_batch0_pred.jpg)
+**V3.2** — 200 epochs, GPU, batch size 64
+![V3.2 Training](assets/v3.2-results.png)
+
+**V3.4 (deployed)** — 200 epochs, GPU, batch size 64
+![V3.4 Training](assets/v3.4-results.png)
+
+### Confusion Matrix (V3.4)
+![Confusion Matrix](assets/v3.4-confusion_matrix.png)
+
+### Validation Predictions (V3.4)
+![Validation Predictions](assets/v3.4-val_pred.jpg)
 
 ---
 
